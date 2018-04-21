@@ -1,5 +1,5 @@
 import keras
-from keras.layers import Dense, Flatten
+from keras.layers import Dense, Flatten, Dropout
 from keras.layers import Conv2D, MaxPooling2D
 from keras.models import Sequential
 from keras import backend as K
@@ -39,20 +39,14 @@ epochs = 200
 input_shape = (binDim, 14, 1,)
 
 model = Sequential()
-#model.add(Dense(600, activation='relu', kernel_initializer='random_uniform', use_bias = True, bias_initializer='random_uniform', input_shape=input_shape))
-#model.add(Dense(1600, activation='relu', kernel_initializer='random_uniform', use_bias = True, bias_initializer='random_uniform'))
-#model.add(Dense(3600, activation='relu', kernel_initializer='random_uniform', use_bias = True, bias_initializer='random_uniform'))
-#model.add(Dense(500, activation='relu', kernel_initializer='random_uniform', use_bias = True, bias_initializer='random_uniform'))
 model.add(Conv2D(16, kernel_size=(20, 14), strides=(1, 1), padding='same', activation='relu', input_shape=input_shape,
                  kernel_initializer='random_uniform'))
-#model.add(Conv2D(42, kernel_size=(32, 2), padding='same', activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 4), strides=(2, 2)))
+model.add(Dropout(0.5))
 model.add(Conv2D(42, kernel_size=(4, 8), padding='same', activation='relu'))
-#model.add(Conv2D(128, kernel_size=(8, 8), padding='same', activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+model.add(Dropout(0.5))
 model.add(Flatten())
-#model.add(Dense(2048, activation='relu'))
-#model.add(Dense(2048, activation='relu'))
 model.add(Dense(600, activation='relu', kernel_initializer='random_uniform'))
 model.add(Dense(60, activation='relu'))
 model.add(Dense(nClasses, activation='softmax', kernel_initializer='random_uniform', use_bias = True, bias_initializer='random_uniform'))
