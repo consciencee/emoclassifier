@@ -15,6 +15,7 @@ nClasses = 6
 
 (samples_train, samples_test), (x_train, y_train), (x_test, y_test) = load.getDataset(binDim)
 
+print samples_train, samples_test
 
 x_train = x_train.reshape(samples_train, binDim, 14, 1)
 x_test = x_test.reshape(samples_test, binDim, 14, 1)
@@ -34,22 +35,23 @@ y_test = keras.utils.to_categorical(y_test, num_classes=nClasses)
 
 # normalize, initialize
 
-epochs = 200
+epochs = 50
 
 input_shape = (binDim, 14, 1,)
 
 model = Sequential()
 model.add(Conv2D(16, kernel_size=(20, 14), strides=(1, 1), padding='same', activation='relu', input_shape=input_shape,
-                 kernel_initializer='random_uniform'))
+                 kernel_initializer='he_uniform'))
 model.add(MaxPooling2D(pool_size=(2, 4), strides=(2, 2)))
-model.add(Dropout(0.5))
-model.add(Conv2D(42, kernel_size=(4, 8), padding='same', activation='relu'))
+#model.add(Dropout(0.25))
+model.add(Conv2D(42, kernel_size=(4, 8), padding='same', activation='relu', kernel_initializer='he_uniform'))
 model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-model.add(Dropout(0.5))
+model.add(Dropout(0.25))
 model.add(Flatten())
-model.add(Dense(600, activation='relu', kernel_initializer='random_uniform'))
-model.add(Dense(60, activation='relu'))
-model.add(Dense(nClasses, activation='softmax', kernel_initializer='random_uniform', use_bias = True, bias_initializer='random_uniform'))
+model.add(Dense(600, activation='relu', kernel_initializer='he_uniform'))
+model.add(Dropout(0.5))
+model.add(Dense(60, activation='relu', kernel_initializer='he_uniform'))
+model.add(Dense(nClasses, activation='softmax', kernel_initializer='glorot_uniform', use_bias = True))
 
 
 model.compile(loss=keras.losses.categorical_crossentropy,
@@ -82,6 +84,8 @@ plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
 plt.show()
 
+
+model.save('lesha.h5')
 
 
 

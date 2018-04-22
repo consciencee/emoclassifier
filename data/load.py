@@ -9,7 +9,7 @@ import mne
 def load(csv_name, dstLabel, batchDim, ignoredIDs = ()):
 
     dataset = loadFiltered(csv_name, ignoredIDs)
-    bins = sliceNumBatches(dataset, batchDim)
+    bins = sliceSequentialBins(dataset, batchDim, 10)
 
     return [list([dstLabel, x]) for x in bins]
 
@@ -65,6 +65,18 @@ def sliceNumBatches(dataset, size):
         dataset = dataset[:int(-math.floor(dimDelta/2.0))]
 
     return np.array_split(dataset, len(dataset)/size)
+
+def sliceSequentialBins(dataset, size, strides = 1):
+
+    print "slicing size=", size, ", strides=", strides
+    bins = np.array([])
+
+    for i in range(0, len(dataset) - size - 1, strides):
+        bins = np.append(bins, dataset[i:i+size])
+
+    print "slice end"
+
+    return bins
 
 def loadFiltered(csv_name, ignoredIDs = ()):
 
