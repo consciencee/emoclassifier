@@ -6,10 +6,14 @@ import numpy as np
 
 import mne
 
-def load(csv_name, dstLabel, batchDim, ignoredIDs = ()):
+def load(csv_name, dstLabel, batchDim, ignoredIDs = (), cut = -1):
 
     dataset = loadFiltered(csv_name, ignoredIDs)
-    bins = sliceSequentialBins(dataset, batchDim, 10)
+    #dataset = dataset[4*128:]
+    #if cut > 0:
+    #    dataset = dataset[:-cut*128]
+    bins = sliceNumBatches(dataset, batchDim)
+    #bins = sliceSequentialBins(dataset, batchDim, 150)
 
     return [list([dstLabel, x]) for x in bins]
 
@@ -69,14 +73,14 @@ def sliceNumBatches(dataset, size):
 def sliceSequentialBins(dataset, size, strides = 1):
 
     print "slicing size=", size, ", strides=", strides
-    bins = np.array([])
+    bins = []
 
     for i in range(0, len(dataset) - size - 1, strides):
-        bins = np.append(bins, dataset[i:i+size])
+        bins.append(dataset[i:i+size])
 
     print "slice end"
 
-    return bins
+    return np.array(bins)
 
 def loadFiltered(csv_name, ignoredIDs = ()):
 
@@ -98,20 +102,14 @@ def loadFiltered(csv_name, ignoredIDs = ()):
     return np.transpose(mne_raw.get_data())
 
 
-def getDataset(batchDim):
+def getDataset(batchDim, filenames, labels, ignoredIDs = ()):
 
     dataset = []
 
-    dataset += load("../samples/Alexey/2/Alexey1_2_eeg_log.csv", 1, batchDim, ("Session1"))
-    dataset += load("../samples/Alexey/2/Alexey2_2_eeg_log.csv", 2, batchDim)
-    dataset += load("../samples/Alexey/2/Alexey3_2_eeg_log.csv", 3, batchDim, ("Session4"))
-    dataset += load("../samples/Alexey/2/Alexey4_2_eeg_log.csv", 4, batchDim)#[70:95]
-    dataset += load("../samples/Alexey/2/Alexey5_2_eeg_log.csv", 5, batchDim)
-    dataset += load("../samples/Alexey/2/Alexey6_2_eeg_log.csv", 0, batchDim)#[70:95]
+    for i in range(len(labels) - 1):
+        dataset += load(filenames[i], labels[i], batchDim, ignoredIDs)
 
     np.random.shuffle(dataset)
-
-    #dataset = dataset[0:50]
 
     nSamples = len(dataset)
 
@@ -126,9 +124,12 @@ def getDataset(batchDim):
     data_test_labels = [dataitem[0] for dataitem in (dataset[nTrain:])]
     print data_test_labels
 
-    return (len(dataset[:nTrain]), len(dataset[nTrain:])), \
+    return (len(data_train_samples), len(data_test_samples)), \
             (np.hstack(data_train_samples), np.hstack(data_train_labels)), \
            (np.hstack(data_test_samples), np.hstack(data_test_labels))
+
+
+
 
 
 
