@@ -3,3 +3,4 @@
 *.pyc
 *.gz
 model/4*
+.idea
