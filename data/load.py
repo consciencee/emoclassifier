@@ -1,5 +1,6 @@
 import model.params as params
 
+
 import math
 
 import numpy as np
@@ -21,7 +22,7 @@ def loadRaw(csv_name, ignoredIDs = ()):
     csv_file = open(csv_name, "r")
 
     if(not csv_file):
-        print "error loading file"
+        print("error loading file")
         return
 
     contents = csv_file.readlines()
@@ -34,7 +35,7 @@ def loadRaw(csv_name, ignoredIDs = ()):
         if line in params.emotionLabels:
             continue
         if line[0:7] == "Session":
-            print line
+            print(line)
             currentIgnore = line in ignoredIDs
             continue
 
@@ -72,13 +73,13 @@ def sliceNumBatches(dataset, size):
 
 def sliceSequentialBins(dataset, size, strides = 1):
 
-    print "slicing size=", size, ", strides=", strides
+    print("slicing size=", size, ", strides=", strides)
     bins = []
 
     for i in range(0, len(dataset) - size - 1, strides):
         bins.append(dataset[i:i+size])
 
-    print "slice end"
+    print("slice end")
 
     return np.array(bins)
 
@@ -118,11 +119,11 @@ def getDataset(batchDim, filenames, labels, ignoredIDs = ()):
     data_train_samples = [np.hstack(dataitem[1]) for dataitem in (dataset[:nTrain])]
     data_train_labels = [dataitem[0] for dataitem in (dataset[:nTrain])]
 
-    print data_train_labels
+    print(data_train_labels)
 
     data_test_samples = [np.hstack(dataitem[1]) for dataitem in (dataset[nTrain:])]
     data_test_labels = [dataitem[0] for dataitem in (dataset[nTrain:])]
-    print data_test_labels
+    print(data_test_labels)
 
     return (len(data_train_samples), len(data_test_samples)), \
             (np.hstack(data_train_samples), np.hstack(data_train_labels)), \

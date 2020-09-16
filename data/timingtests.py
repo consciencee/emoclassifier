@@ -4,7 +4,7 @@ def loadTimings(csv_name, ignoredIDs = ()):
     csv_file = open(csv_name, "r")
 
     if(not csv_file):
-        print "error loading file"
+        print("error loading file")
         return
 
     contents = csv_file.readlines()
@@ -17,7 +17,7 @@ def loadTimings(csv_name, ignoredIDs = ()):
         if line in params.emotionLabels:
             continue
         if line[0:7] == "Session":
-            print line
+            print(line)
             currentIgnore = line in ignoredIDs
             continue
 
@@ -57,4 +57,4 @@ def countSamplingsRate():
                 itemsPerSec = 1
 
         #res.append(itemsPerSec)
-        print i, " ", res
+        print(i, " ", res)
