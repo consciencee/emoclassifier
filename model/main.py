@@ -38,7 +38,7 @@ nClasses = 10
 
 (samples_train, samples_test), (x_train, y_train), (x_test, y_test) = load.getDataset(binDim)
 
-print samples_train, samples_test
+print(samples_train, samples_test)
 
 x_train = x_train.reshape(samples_train, binDim, 14, 1)
 x_test = x_test.reshape(samples_test, binDim, 14, 1)
