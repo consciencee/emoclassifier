@@ -90,6 +90,7 @@ def run(model, x_train, y_train, x_test, y_test):
 
 model = create_model()
 
+# eeg log files
 filenames = [
             "../../samples/Alexey/2/Alexey1_2_eeg_log.csv",
              "../../samples/Alexey/2/Alexey2_2_eeg_log.csv",
@@ -97,8 +98,13 @@ filenames = [
              "../../samples/Alexey/2/Alexey4_2_eeg_log.csv",
              "../../samples/Alexey/2/Alexey5_2_eeg_log.csv",
              "../../samples/Alexey/2/Alexey6_2_eeg_log.csv"]
+
+# labels of the classified emotions
 labels = [1, 2, 3, 4, 5, 0]
+
+# sessions was marked as bad during the experiment session, we shouldn't take them into account
 ignoredIDs = ("Session4", "Session1")
+
 x_train, y_train, x_test, y_test = prepare_data(filenames, labels, ignoredIDs)
 score, history_acc = run(model, x_train, y_train, x_test, y_test)
 print('Test loss:', score[0])
