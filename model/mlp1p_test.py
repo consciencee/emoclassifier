@@ -91,14 +91,13 @@ def run(model, x_train, y_train, x_test, y_test):
 model = create_model()
 
 filenames = [
-            # "../../samples/Alexey/2/Alexey1_2_eeg_log.csv",
-            #  "../../samples/Alexey/2/Alexey2_2_eeg_log.csv",
-            #  "../../samples/Alexey/2/Alexey3_2_eeg_log.csv",
-            #  "../../samples/Alexey/2/Alexey4_2_eeg_log.csv",
-            #  "../../samples/Alexey/2/Alexey5_2_eeg_log.csv",
+            "../../samples/Alexey/2/Alexey1_2_eeg_log.csv",
+             "../../samples/Alexey/2/Alexey2_2_eeg_log.csv",
+             "../../samples/Alexey/2/Alexey3_2_eeg_log.csv",
+             "../../samples/Alexey/2/Alexey4_2_eeg_log.csv",
+             "../../samples/Alexey/2/Alexey5_2_eeg_log.csv",
              "../../samples/Alexey/2/Alexey6_2_eeg_log.csv"]
-labels = [6]
-#labels = [1, 2, 3, 4, 5, 0]
+labels = [1, 2, 3, 4, 5, 0]
 ignoredIDs = ("Session4", "Session1")
 x_train, y_train, x_test, y_test = prepare_data(filenames, labels, ignoredIDs)
 score, history_acc = run(model, x_train, y_train, x_test, y_test)
