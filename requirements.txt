@@ -1,0 +1,6 @@
+mne
+matplotlib
+numpy
+keras
+tensorflow
+joblib
