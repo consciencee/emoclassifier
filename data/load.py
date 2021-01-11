@@ -32,6 +32,7 @@ def loadRaw(csv_name, ignoredIDs = ()):
 
     contents = csv_file.readlines()
     dataset = []
+    currentIgnore = False
 
     for line in contents:
         line = line[:-1] # -2 for windows /r/n
@@ -97,6 +98,8 @@ def loadFiltered(csv_name, ignoredIDs = ()):
     samples = loadRaw(csv_name, ignoredIDs)
     samples = np.transpose(samples)
     #samples *= 0.51
+
+    print(samples.shape)
 
     mne_raw = mne.io.RawArray(samples, info)
 
